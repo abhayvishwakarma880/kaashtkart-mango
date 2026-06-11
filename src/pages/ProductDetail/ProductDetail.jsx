@@ -286,6 +286,7 @@ import Footer from "../../components/layout/Footer";
 import Loader from "../../components/common/Loader";
 import LadduCard from "../../components/cards/LadduCard";
 import ReviewModal from "../../components/common/ReviewModal";
+import LoginModal from "../../components/auth/LoginModal";
 import { getProductReviews, checkReviewEligibility } from "../../api/reviews";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -312,6 +313,8 @@ const ProductDetail = () => {
   const [reviews, setReviews] = useState([]);
   const [isEligibleToReview, setIsEligibleToReview] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
 
   const rawNetWeight = product?.netWeight;
   const netWeightArray = Array.isArray(rawNetWeight)
@@ -415,32 +418,28 @@ const ProductDetail = () => {
     }
   }, [selectedWeight]);
 
-  const checkAuth = async () => {
+  const checkAuth = (action) => {
     const token = localStorage.getItem("userToken");
     if (!token) {
-      const result = await Swal.fire({
-        title: "Sign In Required",
-        text: "Please login to add items to your cart.",
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#F2B705",
-        cancelButtonColor: "#000",
-        confirmButtonText: "Login Now",
-        customClass: {
-          popup: "compact-swal-popup",
-          title: "compact-swal-title",
-          content: "compact-swal-content",
-        },
-      });
-      if (result.isConfirmed) navigate("/login");
+      if (action) setPendingAction(() => action);
+      setIsLoginModalOpen(true);
       return false;
     }
     return true;
   };
 
+  const handleLoginSuccess = () => {
+    setIsLoginModalOpen(false);
+    if (pendingAction) {
+      pendingAction();
+      setPendingAction(null);
+    } else {
+      window.location.reload();
+    }
+  };
+
   const handleAddToCart = async () => {
-    const isAuth = await checkAuth();
-    if (!isAuth) return;
+    if (!checkAuth(handleAddToCart)) return;
     setAdding(true);
     try {
       await addToCartApi({
@@ -459,8 +458,7 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = async () => {
-    const isAuth = await checkAuth();
-    if (!isAuth) return;
+    if (!checkAuth(handleBuyNow)) return;
     setAdding(true);
     try {
       await addToCartApi({
@@ -536,7 +534,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-gray-800">
         <h2 className="text-xl font-bold mb-3">Product Not Found</h2>
-        <Link to="/mangos" className="text-yellow-600 font-medium text-sm">
+        <Link to="/mangoes" className="text-yellow-600 font-medium text-sm">
           ← Back to Shop
         </Link>
       </div>
@@ -625,12 +623,12 @@ const ProductDetail = () => {
         {/* items-start added to help with sticky alignment */}
         <div className="flex flex-col lg:flex-row lg:gap-8 gap-8 items-start">
           {/* Left: Image Section */}
-          <div className="lg:w-[420px] flex-shrink-0 w-full">
+          <div className="lg:w-5/12 flex-shrink-0 w-full">
             {/* Adjusted sticky top to match right content better */}
             <div className="sticky top-24 lg:pr-4">
-              {/* max-w-[420px] - Image container height increased slightly */}
+              {/* Image container */}
               <div
-                className="max-w-[420px] mx-auto aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center relative group shadow-inner cursor-zoom-in"
+                className="w-full mx-auto aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center relative group shadow-inner cursor-zoom-in"
                 onMouseEnter={() => setIsZoomed(true)}
                 onMouseLeave={() => setIsZoomed(false)}
                 onMouseMove={handleMouseMove}
@@ -693,7 +691,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col pt-1 lg:pt-0 min-w-0 lg:max-w-[500px] lg:h-[420px] justify-between relative">
+          <div className="lg:w-7/12 flex flex-col pt-1 lg:pt-0 min-w-0 lg:h-[420px] justify-between relative">
             {isZoomed && (
               <div className="absolute inset-0 z-50 bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xl pointer-events-none">
                 <div
@@ -738,33 +736,7 @@ const ProductDetail = () => {
                 </div>
               </div>
 
-              {/* Feature Cards Row */}
-              <div className="flex items-center gap-3 py-3  border-b border-gray-100">
-                {[
-                  {
-                    icon: <Smile className="text-[#FF8A00]" size={18} />,
-                    text: "Farm Fresh",
-                  },
-                  {
-                    icon: <Shield className="text-[#FF8A00]" size={18} />,
-                    text: "Chemical Free",
-                  },
-                  {
-                    icon: <Truck className="text-[#FF8A00]" size={18} />,
-                    text: "Fast Delivery",
-                  },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="w-20 h-16 flex flex-col items-center justify-center gap-1 bg-[#FFF9F3] border border-[#FFD9B2]/40 rounded-xl p-1"
-                  >
-                    <div className="">{item.icon}</div>
-                    <span className="text-[8px] font-bold text-[#55606B] text-center leading-tight uppercase">
-                      {item.text}
-                    </span>
-                  </div>
-                ))}
-              </div>
+
 
               <div className="py-2 border-b border-gray-100">
                 {(() => {
@@ -836,7 +808,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mb-4 w-full">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mb-4 w-full lg:max-w-md">
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden h-9 bg-white">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -885,7 +857,7 @@ const ProductDetail = () => {
                     <MapPin size={18} className="text-[#FF8A00]" />
                     <span>Check Delivery Availability</span>
                   </div>
-                  <div className="relative">
+                  <div className="relative w-full lg:max-w-md">
                     <input
                       type="text"
                       placeholder="Enter pincode"
@@ -912,6 +884,34 @@ const ProductDetail = () => {
                       {deliveryMsg}
                     </p>
                   )}
+                </div>
+
+                {/* Feature Cards Row */}
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100 mt-4">
+                  {[
+                    {
+                      icon: <Smile className="text-[#FF8A00]" size={18} />,
+                      text: "Farm Fresh",
+                    },
+                    {
+                      icon: <Shield className="text-[#FF8A00]" size={18} />,
+                      text: "Chemical Free",
+                    },
+                    {
+                      icon: <Truck className="text-[#FF8A00]" size={18} />,
+                      text: "Fast Delivery",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="w-20 h-16 flex flex-col items-center justify-center gap-1 bg-[#FFF9F3] border border-[#FFD9B2]/40 rounded-xl p-1"
+                    >
+                      <div className="">{item.icon}</div>
+                      <span className="text-[8px] font-bold text-[#55606B] text-center leading-tight uppercase">
+                        {item.text}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1152,7 +1152,8 @@ const ProductDetail = () => {
       </section>
 
       {/* Customer Reviews Section */}
-      <section className="max-w-[1440px] 3xl:max-w-[1900px] mx-auto px-4 md:px-12 mb-0">
+      {reviews.length > 0 && (
+        <section className="max-w-[1440px] 3xl:max-w-[1900px] mx-auto px-4 md:px-12 mb-0">
         <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
           <h2 className="text-xl md:text-2xl font-black text-gray-900">
             Customer Reviews
@@ -1167,11 +1168,6 @@ const ProductDetail = () => {
           )}
         </div>
 
-        {reviews.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 rounded-2xl border border-gray-100">
-            <p className="text-gray-500">No reviews yet. Be the first to review this product!</p>
-          </div>
-        ) : (
           <div className="mx-4 mb-10">
             <Slider {...reviewSliderSettings}>
               {reviews.map((review) => (
@@ -1213,10 +1209,8 @@ const ProductDetail = () => {
               ))}
             </Slider>
           </div>
-        )}
-
-
-      </section>
+        </section>
+      )}
 
       {/* Related Products Section */}
       {product.relatedProducts && product.relatedProducts.length > 0 && (
@@ -1255,6 +1249,11 @@ const ProductDetail = () => {
         onClose={() => setIsReviewModalOpen(false)} 
         productId={product.id} 
         onReviewAdded={handleReviewAdded} 
+      />
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onSuccess={handleLoginSuccess}
       />
     </div>
   );

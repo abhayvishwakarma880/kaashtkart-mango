@@ -11,6 +11,7 @@ import {
   Facebook,
   Linkedin,
   Pin,
+  ChevronRight
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import ccswLogo from "../../assets/images/ccws.png";
@@ -60,7 +61,7 @@ const Footer = () => {
   }, []);
 
   const handleCategoryClick = (categoryId) => {
-    navigate("/mangos", { state: { categoryId: categoryId } });
+    navigate("/mangoes", { state: { categoryId: categoryId } });
     window.scrollTo(0, 0);
   };
 
@@ -103,8 +104,9 @@ const Footer = () => {
                 <li key={to}>
                   <Link
                     to={to}
-                    className="text-gray-400 hover:text-[var(--color-secondary)] transition-colors text-sm"
+                    className="text-gray-400 hover:text-[var(--color-secondary)] transition-all duration-300 hover:translate-x-1.5 text-sm flex items-center gap-1.5"
                   >
+                    <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
                     {label}
                   </Link>
                 </li>
@@ -134,13 +136,14 @@ const Footer = () => {
                 <li key={to}>
                   <Link
                     to={to}
-                    className="text-gray-400 hover:text-[var(--color-secondary)] transition-colors text-sm"
+                    className="text-gray-400 hover:text-[var(--color-secondary)] transition-all duration-300 hover:translate-x-1.5 text-sm flex items-center gap-1.5"
                   >
+                    <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
                     {label}
                   </Link>
                 </li>
               ))}
-              <li><a href="https://www.dtdc.com/track-your-shipment/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[var(--color-secondary)] transition-colors text-sm">Track Order</a></li>
+              <li><a href="https://www.dtdc.com/track-your-shipment/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[var(--color-secondary)] transition-all duration-300 hover:translate-x-1.5 text-sm flex items-center gap-1.5"><ChevronRight className="w-3.5 h-3.5 flex-shrink-0" /> Track Order</a></li>
             </ul>
           </div>
 
@@ -159,9 +162,9 @@ const Footer = () => {
                     <li key={cat._id}>
                       <button
                         onClick={() => handleCategoryClick(cat._id)}
-                        className="text-gray-400 cursor-pointer hover:text-[var(--color-secondary)] transition-colors text-sm flex items-center gap-2 text-left"
+                        className="text-gray-400 cursor-pointer hover:text-[var(--color-secondary)] transition-all duration-300 hover:translate-x-1.5 text-sm flex items-center gap-1.5 text-left w-fit"
                       >
-                        {/* <div className="w-1 h-1 rounded-full bg-[var(--color-secondary)] opacity-40"></div> */}
+                        <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
                         {cat.name}
                       </button>
                     </li>

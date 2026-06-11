@@ -52,7 +52,7 @@ import { checkDeliveryApi } from "../../api/delivery";
 const Shop = () => {
   const navigate = useNavigate();
   const sectionRefs = useRef([]);
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [paymentMethod, setPaymentMethod] = useState("upi");
 
   // Cart Data State
   const [cartItems, setCartItems] = useState([]);
@@ -71,12 +71,12 @@ const Shop = () => {
 
   // Multi-Courier State
   const [availableCouriers, setAvailableCouriers] = useState([]);
-  const [selectedCourier, setSelectedCourier] = useState("");
+  const [selectedCourier, setSelectedCourier] = useState("shiprocket");
   const [checkingCourier, setCheckingCourier] = useState(false);
   const [courierError, setCourierError] = useState("");
 
   // Dynamic shipping charge
-  const HANDLING_FEE = 20;
+  
   const selectedCourierObj = availableCouriers.find((c) => c.provider === selectedCourier);
   const dynamicShippingCharge = selectedCourierObj?.freightCharge
     ? Math.ceil(selectedCourierObj.freightCharge)
@@ -357,7 +357,8 @@ const Shop = () => {
       const response = await checkDeliveryApi(selectedAddress.pincode, totalWeight);
       if (response.success && response.availableCouriers?.length > 0) {
         setAvailableCouriers(response.availableCouriers);
-        setSelectedCourier(response.availableCouriers[0].provider);
+        const shiprocket = response.availableCouriers.find(c => c.provider === "shiprocket");
+        setSelectedCourier(shiprocket ? "shiprocket" : response.availableCouriers[0].provider);
       } else {
         setAvailableCouriers([]);
         setSelectedCourier("");
@@ -482,10 +483,10 @@ const Shop = () => {
       return;
     }
 
-    const finalAmount = cartTotal + dynamicShippingCharge + HANDLING_FEE;
+    const finalAmount = cartTotal + dynamicShippingCharge;
     const result = await Swal.fire({
       title: "Confirm Order?",
-      text: `Place order for ₹${finalAmount}? (Shipping: ₹${dynamicShippingCharge} + Handling: ₹${HANDLING_FEE})`,
+      text: `Place order for ₹${finalAmount}? (Shipping: ₹${dynamicShippingCharge})`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#FBBF24",
@@ -523,7 +524,7 @@ const Shop = () => {
             pincode: selectedAddress.pincode,
             country: "India",
           },
-          handlingFee: HANDLING_FEE,
+          
           shippingCharges: dynamicShippingCharge,
           selectedCourier: selectedCourier,
           weight: totalOrderWeight,
@@ -558,9 +559,9 @@ const Shop = () => {
       try {
         const orderData = await createPaymentOrderApi({
           shippingCharges: dynamicShippingCharge,
-          handlingFee: HANDLING_FEE,
+          
           shippingCharge: dynamicShippingCharge,
-          handling_fee: HANDLING_FEE,
+          
           subtotal: Number(cartTotal),
           total: Number(finalAmount),
           amount: finalAmount,
@@ -577,7 +578,7 @@ const Shop = () => {
           })),
           notes: {
             shippingCharges: dynamicShippingCharge,
-            handlingFee: HANDLING_FEE,
+            
             userId: userId,
             paymentMethod: "Online",
             selectedCourier: selectedCourier,
@@ -604,7 +605,7 @@ const Shop = () => {
                 paymentMethod: "Online",
                 subtotal: Number(cartTotal),
                 shippingCharges: dynamicShippingCharge,
-                handlingFee: HANDLING_FEE,
+                
                 total: Number(finalAmount),
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
@@ -653,7 +654,7 @@ const Shop = () => {
           notes: {
             address: `${selectedAddress.addressLine1}, ${selectedAddress.city}`,
             shippingCharges: dynamicShippingCharge,
-            handlingFee: HANDLING_FEE,
+            
             totalAmount: finalAmount,
           },
           theme: { color: "#FBBF24" },
@@ -677,7 +678,7 @@ const Shop = () => {
     navigate(`/product/${productId}`);
   };
 
-  const finalGrandTotal = cartTotal + dynamicShippingCharge + HANDLING_FEE;
+  const finalGrandTotal = cartTotal + dynamicShippingCharge;
 
   return (
     <div className="bg-white text-gray-900 font-sans min-h-screen">
@@ -711,7 +712,7 @@ const Shop = () => {
             <div className="text-5xl mb-5">🛒</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">Your tray is empty!</h2>
             <p className="text-gray-500 mb-8 max-w-md mx-auto">Looks like you haven't added any mango yet. Explore our collection.</p>
-            <a href="/mangos" className="inline-block px-8 py-3 bg-yellow-500 text-gray-900 rounded-xl font-semibold hover:bg-yellow-400 transition shadow-md">
+            <a href="/mangoes" className="inline-block px-8 py-3 bg-yellow-500 text-gray-900 rounded-xl font-semibold hover:bg-yellow-400 transition shadow-md">
               Browse Mango
             </a>
           </div>
@@ -846,6 +847,7 @@ const Shop = () => {
               </div>
 
               {/* Courier Selection */}
+              {false && (
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
                 <h2 className="font-bold text-gray-800 flex items-center gap-2 mb-5"><Truck size={18} className="text-yellow-500" /> Select Delivery Courier</h2>
                 {checkingCourier ? (
@@ -885,8 +887,10 @@ const Shop = () => {
                   </div>
                 )}
               </div>
+              )}
 
               {/* Payment Methods */}
+              {false && (
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
                 <h2 className="font-bold text-gray-800 flex items-center gap-2 mb-5"><CreditCard size={18} className="text-yellow-500" /> Payment Method</h2>
                 {loadingMethods ? (
@@ -918,6 +922,7 @@ const Shop = () => {
                   </div>
                 )}
               </div>
+              )}
             </div>
 
             {/* Right Column - Order Summary */}
@@ -935,10 +940,7 @@ const Shop = () => {
                     <span className="font-medium flex items-center gap-1">Shipping {selectedCourierObj && <span className="text-[10px] text-gray-400 font-normal italic">({selectedCourierObj.courierName})</span>}</span>
                     <span className={`font-bold ${dynamicShippingCharge === 0 ? "text-green-600" : "text-gray-900"}`}>{dynamicShippingCharge === 0 ? "Free" : `₹${dynamicShippingCharge}`}</span>
                   </div>
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span className="font-medium">Handling Fee</span>
-                    <span className="font-bold text-gray-900">₹{HANDLING_FEE}</span>
-                  </div>
+                  
                 </div>
 
                 <div className="pt-6">

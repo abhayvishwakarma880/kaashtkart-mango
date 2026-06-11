@@ -188,12 +188,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
                                             <span className="font-medium text-gray-900">₹{order.shippingCharges}</span>
                                         </div>
                                     )}
-                                    {order.handlingFee > 0 && (
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-gray-500">Handling Fee</span>
-                                            <span className="font-medium text-gray-900">₹{order.handlingFee}</span>
-                                        </div>
-                                    )}
+                                    
                                     {order.discount > 0 && (
                                         <div className="flex justify-between text-sm">
                                             <span className="text-red-500">Discount</span>
@@ -499,7 +494,7 @@ const Orders = () => {
                             You haven't placed any orders yet. Start exploring our delicious mango!
                         </p>
                         <button
-                            onClick={() => navigate('/mangos')}
+                            onClick={() => navigate('/mangoes')}
                             className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-xl hover:bg-yellow-400 transition-all shadow-md"
                         >
                             Shop Now <ArrowRight size={16} />
@@ -803,12 +798,7 @@ const Orders = () => {
                                                     <span className="font-medium text-gray-900">₹{selectedOrder.shippingCharges}</span>
                                                 </div>
                                             )}
-                                            {selectedOrder.handlingFee > 0 && (
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-600">Handling Fee</span>
-                                                    <span className="font-medium text-gray-900">₹{selectedOrder.handlingFee}</span>
-                                                </div>
-                                            )}
+                                            
                                             {selectedOrder.discount > 0 && (
                                                 <div className="flex justify-between text-sm">
                                                     <span className="text-red-600">Discount</span>

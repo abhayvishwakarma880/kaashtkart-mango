@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Phone, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -84,8 +85,11 @@ const LoginModal = ({ isOpen, onClose, onSuccess }) => {
 
     const isLoginEnabled = phone.length === 10 && /^[6-9]/.test(phone) && otp.every(digit => digit !== '');
 
-    return (
-        <div className="fixed inset-0 z-[3000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    const modalContent = (
+        <div 
+            className="fixed inset-0 z-[3000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={(e) => e.stopPropagation()}
+        >
             <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl relative overflow-hidden animate-fadeIn">
                 <div className="absolute top-4 right-4">
                     <button 
@@ -187,6 +191,8 @@ const LoginModal = ({ isOpen, onClose, onSuccess }) => {
             `}} />
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };
 
 export default LoginModal;

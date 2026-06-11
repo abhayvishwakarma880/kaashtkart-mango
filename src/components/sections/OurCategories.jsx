@@ -126,7 +126,7 @@ const OurCategories = memo(({ addToRefs }) => {
   }, []);
 
   const handleCategoryClick = (categoryId) => {
-    navigate('/mangos', { state: { categoryId } });
+    navigate('/mangoes', { state: { categoryId } });
   };
 
   useEffect(() => { fetchData(); }, [fetchData]);

@@ -123,13 +123,13 @@ const Navbar = () => {
 
   const handleCategoryClick = (categoryId) => {
     setIsDropdownOpen(false);
-    navigate("/mangos", { state: { categoryId: categoryId } });
+    navigate("/mangoes", { state: { categoryId: categoryId } });
   };
 
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "Our Legacy" },
-    { to: "/mangos", label: "Order Now" },
+    { to: "/mangoes", label: "Order Now" },
     { to: "/carporate-gifting", label: "Corporate Gifting" },
     { to: "/bulk-order", label: "Bulk Order" },
     // { to: "/blogs", label: "Blogs" },
@@ -152,7 +152,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <ul className="hidden gap-8 p-0 m-0 list-none lg:flex">
           {navLinks.map((link) => {
-            if (link.to === "/mangos") {
+            if (link.to === "/mangoes") {
               return (
                 <li
                   key={link.to}
@@ -227,7 +227,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
           {/* Booking Button (Highlighted Green) */}
           <NavLink
-            to="/mangos"
+            to="/mangoes"
             className={({ isActive }) =>
               `no-underline font-extrabold text-[10px] sm:text-xs px-2.5 py-1.5 sm:px-4 sm:py-2 rounded transition-all duration-300 transform hover:-translate-y-0.5 shadow-md flex items-center gap-1.5 ${
                 isActive

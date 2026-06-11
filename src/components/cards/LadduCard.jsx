@@ -4,11 +4,14 @@ import { addToCartApi } from '../../api/cart';
 import { ShoppingCart, Star, CheckCircle, Heart } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import LoginModal from '../auth/LoginModal';
 
 const LadduCard = memo(({ product, isBookingPage = false, onBookNow }) => {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
 
   const rating = product?.ratingsAverage ? parseFloat(product.ratingsAverage).toFixed(1) : 0;
   const reviewCount = product?.ratingsQuantity || 0;
@@ -39,36 +42,30 @@ const LadduCard = memo(({ product, isBookingPage = false, onBookNow }) => {
   }
 
 
-  const checkAuth = async () => {
+  const checkAuth = (action) => {
     const token = localStorage.getItem('userToken');
     if (!token) {
-      const result = await Swal.fire({
-        title: 'Authentic Taste Awaits!',
-        text: 'Please login to add these delicious Manfo to your cart.',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#F2B705',
-        cancelButtonColor: '#2E2E2E',
-        confirmButtonText: 'Login Now',
-        cancelButtonText: 'Later',
-        background: '#FFFFFF',
-        color: '#2E2E2E',
-        iconColor: '#F2B705'
-      });
-
-      if (result.isConfirmed) {
-        navigate('/login');
-      }
+      if (action) setPendingAction(() => action);
+      setIsLoginModalOpen(true);
       return false;
     }
     return true;
   };
 
+  const handleLoginSuccess = () => {
+    setIsLoginModalOpen(false);
+    if (pendingAction) {
+      pendingAction();
+      setPendingAction(null);
+    } else {
+      window.location.reload();
+    }
+  };
+
   const handleAddToCart = async (e) => {
     e.stopPropagation();
 
-    const isAuth = await checkAuth();
-    if (!isAuth) return;
+    if (!checkAuth(() => handleAddToCart(e))) return;
 
     setAdding(true);
     try {
@@ -265,6 +262,12 @@ const LadduCard = memo(({ product, isBookingPage = false, onBookNow }) => {
           )}
         </div>
       </div>
+      
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </div>
   );
 });
