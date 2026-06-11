@@ -171,7 +171,7 @@ const BlogDetail = () => {
               Blogs
             </Link>
             <span className="text-[#5C3D1A]/60 text-xs">/</span>
-            <span className="text-[#2C2418] font-medium text-[11px] uppercase tracking-wide truncate max-w-[150px] md:max-w-[250px]">
+            <span className="text-[#2C2418] font-medium text-[11px] uppercase tracking-wide">
               {blog.title}
             </span>
           </div>
@@ -180,9 +180,9 @@ const BlogDetail = () => {
 
       {/* Main Content Area - Two Column Layout */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-12 md:py-16">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-5">
           {/* LEFT COLUMN - Main Blog Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 bg-white p-5 rounded-xl shadow">
             {/* Blog Image & Title */}
             <div className="mb-8">
               <img 
@@ -190,59 +190,46 @@ const BlogDetail = () => {
                 alt={blog.title} 
                 className="w-full h-auto max-h-[600px] object-cover rounded-xl mb-8 shadow-sm border border-[#E6D5B8]"
               />
-              <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-[#C97E1A]/10 text-[#C97E1A] border border-[#C97E1A]/20 text-[11px] font-bold uppercase tracking-wider">
+              {/* <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-[#C97E1A]/10 text-[#C97E1A] border border-[#C97E1A]/20 text-[11px] font-bold uppercase tracking-wider">
                 <i className="fas fa-leaf mr-1 text-[10px]"></i> BLOG POST
-              </div>
-              <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-[#2C2418] leading-tight mb-6">
+              </div> */}
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-[#2C2418] text-justify leading-tight mb-6">
                 {blog.title}
               </h1>
-              <div className="flex flex-wrap items-center gap-4 text-[#7A6B50] text-sm">
-                <span className="flex items-center gap-1.5 bg-white px-4 py-2 rounded-full border border-[#E6D5B8] shadow-sm">
-                  <i className="far fa-calendar-alt text-[#C97E1A]"></i>
-                  {new Date(blog.createdAt).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </span>
-                <span className="flex items-center gap-1.5 bg-white px-4 py-2 rounded-full border border-[#E6D5B8] shadow-sm">
-                  <i className="fas fa-leaf text-[#C97E1A]"></i>
-                  By KaashtKart
-                </span>
-              </div>
-            </div>
-
-            {/* Author & Share Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-[#E6D5B8]">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#C97E1A] flex items-center justify-center text-white font-bold text-lg">
-                  KK
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-[#E6D5B8]">
+                <div className="flex flex-wrap items-center gap-4 text-[#7A6B50] text-sm">
+                  <span className="flex items-center gap-1.5 bg-white px-4 py-2 rounded-full border border-[#E6D5B8] shadow-sm">
+                    <i className="far fa-calendar-alt text-[#C97E1A]"></i>
+                    {new Date(blog.createdAt).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-white px-4 py-2 rounded-full border border-[#E6D5B8] shadow-sm">
+                    <i className="fas fa-leaf text-[#C97E1A]"></i>
+                    By KaashtKart
+                  </span>
                 </div>
-                <div>
-                  <p className="font-bold text-[#2C2418]">KaashtKart</p>
-                  <p className="text-sm text-[#7A6B50]">
-                    Mango Expert
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-[#7A6B50]">Share:</span>
-                <button onClick={() => handleShare('facebook')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
-                  <i className="fab fa-facebook-f text-sm"></i>
-                </button>
-                <button onClick={() => handleShare('twitter')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
-                  <i className="fab fa-twitter text-sm"></i>
-                </button>
-                <button onClick={() => handleShare('linkedin')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
-                  <i className="fab fa-linkedin-in text-sm"></i>
-                </button>
-                <button onClick={() => handleShare('whatsapp')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
-                  <i className="fab fa-whatsapp text-sm"></i>
-                </button>
-                <button onClick={() => handleShare('copy')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all" title="Copy Link">
-                  <i className="fas fa-link text-sm"></i>
-                </button>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-[#7A6B50]">Share:</span>
+                  <button onClick={() => handleShare('facebook')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
+                    <i className="fab fa-facebook-f text-sm"></i>
+                  </button>
+                  <button onClick={() => handleShare('twitter')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
+                    <i className="fab fa-twitter text-sm"></i>
+                  </button>
+                  <button onClick={() => handleShare('linkedin')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
+                    <i className="fab fa-linkedin-in text-sm"></i>
+                  </button>
+                  <button onClick={() => handleShare('whatsapp')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all">
+                    <i className="fab fa-whatsapp text-sm"></i>
+                  </button>
+                  <button onClick={() => handleShare('copy')} className="w-9 h-9 rounded-full bg-white border border-[#E6D5B8] flex cursor-pointer items-center justify-center text-[#5C3D1A] hover:bg-[#C97E1A] hover:text-white hover:border-[#C97E1A] transition-all" title="Copy Link">
+                    <i className="fas fa-link text-sm"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -509,8 +496,9 @@ const BlogDetail = () => {
           __html: `
         .blog-body-content {
           color: #2C2418;
-          font-size: 1.05rem;
-          line-height: 1.7;
+          font-size: 1rem;
+          line-height: 1.5;
+          text-align: justify;
         }
         .blog-body-content h1 {
           font-size: 2.2rem;

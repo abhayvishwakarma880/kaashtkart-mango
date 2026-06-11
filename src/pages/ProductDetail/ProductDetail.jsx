@@ -771,7 +771,7 @@ const ProductDetail = () => {
                 })()}
                 <div className="flex items-center gap-2">
                   <span className="text-gray-500 text-xs font-medium italic">
-                    Net Weight:
+                    Select Size:
                   </span>
                   <div className="flex flex-wrap gap-3 pt-1">
                     {netWeightArray.map((weight, idx) => {
@@ -787,18 +787,18 @@ const ProductDetail = () => {
                         <button
                           key={idx}
                           onClick={() => setSelectedWeight(weight)}
-                          className={`group relative flex flex-col items-center justify-center min-w-[80px] px-3 py-1.5 rounded-xl border-2 transition-all duration-300 ease-out cursor-pointer overflow-hidden ${
+                          className={`group relative flex gap-4 items-center justify-center min-w-[80px] px-3 py-1.5 rounded-xl border-2 transition-all duration-300 ease-out cursor-pointer overflow-hidden ${
                             selectedWeight === weight
                               ? "bg-amber-50 border-amber-400 text-amber-800 shadow-md transform scale-105"
                               : "bg-white border-gray-100 text-gray-600 hover:border-amber-300 hover:bg-amber-50/50 hover:-translate-y-1 hover:shadow-lg"
                           }`}
                         >
-                          {selectedWeight === weight && (
+                          {/* {selectedWeight === weight && (
                             <div className="absolute top-0 right-0 w-8 h-8 bg-amber-400 rounded-bl-full -z-0 opacity-20"></div>
-                          )}
+                          )} */}
                           <span className="text-[13px] font-bold z-10">{weight}</span>
                           {optionFinalPrice !== null && (
-                            <span className={`text-[11px] font-black z-10 transition-colors duration-300 ${selectedWeight === weight ? "text-amber-600" : "text-gray-400 group-hover:text-amber-500"}`}>
+                            <span className={`text-[13x] font-black z-10 transition-colors duration-300 ${selectedWeight === weight ? "text-amber-600" : "text-gray-400 group-hover:text-amber-500"}`}>
                               ₹{optionFinalPrice}
                             </span>
                           )}
@@ -808,7 +808,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mb-4 w-full lg:max-w-md">
+              <div className="flex mt-3 flex-wrap sm:flex-nowrap items-center gap-2 mb-4 w-full lg:max-w-md">
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden h-9 bg-white">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
