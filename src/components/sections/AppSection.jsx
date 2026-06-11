@@ -1,0 +1,205 @@
+import { Download, Smartphone, Truck, Clock, BadgeCheck, Star, Shield, Zap } from 'lucide-react';
+import AppMockup1 from '../../assets/images/AppMockup1.png';
+import AppMockup2 from '../../assets/images/AppMockup2.png';
+import mangoBgPattern from '../../assets/images/mangoBgPattern.png';
+import mangoBgPattern2 from '../../assets/images/mangoBgPattern2.png';
+
+const AppSection = () => {
+    const openPlayStore = () => {
+        window.open('https://play.google.com', '_blank');
+    };
+
+    const features = [
+        { icon: Truck, text: 'Free Delivery', color: 'from-orange-500 to-amber-500' },
+        { icon: Clock, text: '30 Mins Delivery', color: 'from-blue-500 to-cyan-500' },
+        { icon: BadgeCheck, text: 'Quality Guarantee', color: 'from-green-500 to-emerald-500' },
+        { icon: Star, text: '4.8 Rating', color: 'from-yellow-500 to-orange-500' },
+    ];
+
+    return (
+        <section className="relative py-16 overflow-hidden bg-gradient-to-br from-amber-50/40 via-white to-yellow-50/40">
+            
+            {/* Animated Background Elements with Yellow Tone */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-200/15 rounded-full blur-3xl"></div>
+                
+                {/* Additional Yellow Glow */}
+                <div className="absolute top-20 left-1/4 w-64 h-64 bg-yellow-300/10 rounded-full blur-3xl animate-pulse delay-700"></div>
+                <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-yellow-400/10 rounded-full blur-3xl animate-pulse delay-1500"></div>
+            </div>
+
+            {/* Soft Yellow Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-yellow-200/20 via-transparent to-yellow-100/20"></div>
+
+            {/* Floating Decorative Elements */}
+            <div className="absolute inset-0 pointer-events-none opacity-40 overflow-hidden">
+                <span className="absolute -top-2 -left-2 text-7xl select-none rotate-[-15deg]">🥭</span>
+                <span className="absolute top-6 left-20 text-4xl select-none rotate-[20deg]">🌿</span>
+                <span className="absolute top-0 left-36 text-3xl select-none rotate-[-10deg]">🍃</span>
+                <span className="absolute -bottom-2 -right-2 text-7xl select-none rotate-[15deg]">🥭</span>
+                <span className="absolute bottom-6 right-20 text-4xl select-none rotate-[-20deg]">🌿</span>
+                <span className="absolute bottom-0 right-36 text-3xl select-none rotate-[10deg]">🍃</span>
+                <span className="absolute top-1/3 -left-1 text-4xl select-none rotate-[30deg]">🍃</span>
+                <span className="absolute top-2/3 -left-1 text-3xl select-none rotate-[-20deg]">🌿</span>
+                <span className="absolute top-1/3 -right-1 text-4xl select-none rotate-[-30deg]">🍃</span>
+                <span className="absolute top-2/3 -right-1 text-3xl select-none rotate-[20deg]">🌿</span>
+            </div>
+
+            {/* Mango Pattern Background */}
+            <div className="absolute inset-0 opacity-[0.6] pointer-events-none mix-blend-multiply" style={{
+                backgroundImage: `url(${mangoBgPattern2})`,
+                backgroundSize: '500px',
+                backgroundRepeat: 'repeat',
+            }}></div>
+
+            <div className="max-w-[1440px] 3xl:max-w-[1900px] mx-auto px-4 md:px-12 w-full relative z-20">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+
+                    {/* Left Side - Content */}
+                    <div className="w-full lg:w-1/2 space-y-6 md:space-y-8">
+
+                        {/* Heading */}
+                        <div className="space-y-3">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+                                Download{' '}
+                                <span className="bg-gradient-to-b from-[#FFAE11] to-[#FF7A00] bg-clip-text text-transparent">
+                                    KaashtKart
+                                </span>{' '}
+                                App
+                            </h2>
+                            <div className="h-1 w-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full"></div>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-lg">
+                            Order fresh mangoes directly from our orchards to your doorstep. 
+                            Experience the finest quality with lightning-fast delivery.
+                        </p>
+
+                        {/* Download Links Section */}
+                        <div className="pt-6 flex flex-wrap items-center gap-6">
+                            {/* <span className="text-xl sm:text-2xl font-medium text-[#4A5D6E] whitespace-nowrap">
+                                Download App:
+                            </span> */}
+                            <div className="flex flex-wrap items-center gap-4">
+                                {/* App Store Button */}
+                                <a 
+                                    href="#" 
+                                    className="transition-transform hover:scale-105 duration-300"
+                                >
+                                    <img 
+                                        src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+                                        alt="Download on the App Store" 
+                                        className="h-10 sm:h-12 w-auto"
+                                    />
+                                </a>
+                                {/* Google Play Button */}
+                                <a 
+                                    href="#" 
+                                    className="transition-transform hover:scale-105 duration-300"
+                                >
+                                    <img 
+                                        src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+                                        alt="Get it on Google Play" 
+                                        className="h-10 sm:h-12 w-auto"
+                                    />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Side - Premium Phone Mockups */}
+                    <div className="w-full lg:w-1/2 flex justify-center items-center">
+                        <div className="relative flex justify-center items-center">
+                            
+                            {/* Background Glow - Yellow Tone */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-yellow-400/20 rounded-full blur-3xl"></div>
+                            
+                            {/* First Mobile Mockup */}
+                            <div
+                                className="relative z-0 transform -rotate-12 hover:rotate-0 transition-transform duration-500 -mr-12 sm:-mr-20"
+                                style={{
+                                    animation: 'floatLeft 4s ease-in-out infinite'
+                                }}
+                            >
+                                <img 
+                                    src={AppMockup1} 
+                                    alt="kaashtkart App View 1" 
+                                    className="w-[120px] sm:w-[180px] md:w-[220px] h-auto drop-shadow-2xl"
+                                />
+                            </div>
+
+                            {/* Second Mobile Mockup */}
+                            <div
+                                className="relative z-10 transform rotate-12 hover:rotate-0 transition-transform duration-500"
+                                style={{
+                                    animation: 'floatRight 4s ease-in-out infinite 0.5s'
+                                }}
+                            >
+                                <img 
+                                    src={AppMockup2} 
+                                    alt="kaashtkart App View 2" 
+                                    className="w-[120px] sm:w-[180px] md:w-[220px] h-auto drop-shadow-2xl"
+                                />
+                            </div>
+
+                            {/* Floating Elements - Yellow Theme */}
+                            <div className="absolute -top-10 -right-10 w-20 h-20 bg-amber-400/40 rounded-full blur-2xl animate-pulse"></div>
+                            <div className="absolute -bottom-8 -left-8 w-16 h-16 bg-yellow-400/30 rounded-full blur-2xl animate-pulse delay-700"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Animations */}
+            <style>{`
+                @keyframes floatLeft {
+                    0%, 100% { 
+                        transform: translateY(0px) rotate(-6deg); 
+                    }
+                    50% { 
+                        transform: translateY(-15px) rotate(-4deg); 
+                    }
+                }
+                
+                @keyframes floatRight {
+                    0%, 100% { 
+                        transform: translateY(0px) rotate(6deg); 
+                    }
+                    50% { 
+                        transform: translateY(-18px) rotate(8deg); 
+                    }
+                }
+
+                @keyframes pulse {
+                    0%, 100% { opacity: 0.6; transform: scale(1); }
+                    50% { opacity: 0.8; transform: scale(1.1); }
+                }
+
+                .animate-pulse {
+                    animation: pulse 3s ease-in-out infinite;
+                }
+
+                .delay-1000 {
+                    animation-delay: 1s;
+                }
+
+                .delay-700 {
+                    animation-delay: 0.7s;
+                }
+
+                .delay-1500 {
+                    animation-delay: 1.5s;
+                }
+
+                .delay-1200 {
+                    animation-delay: 1.2s;
+                }
+            `}</style>
+        </section>
+    );
+};
+
+export default AppSection;
