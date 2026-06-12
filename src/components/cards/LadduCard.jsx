@@ -30,14 +30,15 @@ const LadduCard = memo(({ product, isBookingPage = false, onBookNow }) => {
 
   let displayPrice = 0;
   let originalPrice = 0;
-  const discount = product?.discountPercent || 0;
+  let discount = product?.discountPercent || 0;
 
   if (product?.weightOptions && product.weightOptions.length > 0) {
     let opt = product.weightOptions.find(wo => wo.weight === selectedWeight);
     if (!opt) opt = product.weightOptions[0];
     if (opt) {
       originalPrice = opt.price;
-      displayPrice = Math.round(opt.price * (1 - (discount || 0) / 100));
+      discount = opt.discountPercent ?? discount;
+      displayPrice = Math.round(opt.price * (1 - discount / 100));
     }
   }
 

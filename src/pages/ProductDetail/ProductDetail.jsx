@@ -652,11 +652,19 @@ const ProductDetail = () => {
                   />
                 )}
 
-                {product.discountPercent > 0 && (
-                  <span className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                    {product.discountPercent}% OFF
-                  </span>
-                )}
+                {(() => {
+                  let currentDiscount = product.discountPercent || 0;
+                  if (product.weightOptions && product.weightOptions.length > 0) {
+                    let opt = product.weightOptions.find(wo => wo.weight === selectedWeight);
+                    if (!opt) opt = product.weightOptions[0];
+                    if (opt) currentDiscount = opt.discountPercent ?? currentDiscount;
+                  }
+                  return currentDiscount > 0 ? (
+                    <span className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                      {currentDiscount}% OFF
+                    </span>
+                  ) : null;
+                })()}
               </div>
 
               {/* Gallery Thumbnails */}
@@ -742,12 +750,14 @@ const ProductDetail = () => {
                 {(() => {
                   let displayPrice = 0;
                   let displayFinalPrice = 0;
+                  let currentDiscount = product.discountPercent || 0;
                   if (product.weightOptions && product.weightOptions.length > 0) {
                     let opt = product.weightOptions.find(wo => wo.weight === selectedWeight);
                     if (!opt) opt = product.weightOptions[0];
                     if (opt) {
                       displayPrice = opt.price;
-                      displayFinalPrice = Math.round(opt.price * (1 - (product.discountPercent || 0) / 100));
+                      currentDiscount = opt.discountPercent ?? currentDiscount;
+                      displayFinalPrice = Math.round(opt.price * (1 - currentDiscount / 100));
                     }
                   }
                   
@@ -756,13 +766,13 @@ const ProductDetail = () => {
                       <span className="text-3xl font-black text-gray-900">
                         ₹{displayFinalPrice}
                       </span>
-                      {product.discountPercent > 0 && (
+                      {currentDiscount > 0 && (
                         <>
                           <span className="text-lg text-gray-400 line-through">
                             ₹{displayPrice}
                           </span>
                           <span className="text-green-600 text-xs font-black bg-green-50 px-2 py-1 rounded">
-                            {product.discountPercent}% OFF
+                            {currentDiscount}% OFF
                           </span>
                         </>
                       )}
@@ -779,7 +789,8 @@ const ProductDetail = () => {
                       if (product.weightOptions && product.weightOptions.length > 0) {
                         const opt = product.weightOptions.find(wo => wo.weight === weight);
                         if (opt) {
-                          optionFinalPrice = Math.round(opt.price * (1 - (product.discountPercent || 0) / 100));
+                          const optDiscount = opt.discountPercent ?? product.discountPercent ?? 0;
+                          optionFinalPrice = Math.round(opt.price * (1 - optDiscount / 100));
                         }
                       }
                       

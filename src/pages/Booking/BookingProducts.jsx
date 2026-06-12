@@ -693,7 +693,7 @@ const BookingProducts = () => {
                   let option = selectedProductForBooking.weightOptions.find(wo => wo.weight === selectedProductForBooking.selectedWeight);
                   if (!option) option = selectedProductForBooking.weightOptions[0];
                   if (option) {
-                    const discount = selectedProductForBooking.discountPercent || 0;
+                    const discount = option.discountPercent ?? selectedProductForBooking.discountPercent ?? 0;
                     p = Math.round(option.price * (1 - discount / 100));
                   }
                 }

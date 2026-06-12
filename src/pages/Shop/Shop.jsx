@@ -166,7 +166,7 @@ const Shop = () => {
             
             if (opt) {
               originalPrice = opt.price;
-              const discount = item.product.discountPercent || 0;
+              const discount = opt.discountPercent ?? item.product.discountPercent ?? 0;
               itemPrice = Math.round(opt.price * (1 - discount / 100));
             }
           }
@@ -301,17 +301,15 @@ const Shop = () => {
     try {
       const data = await getPaymentMethodsApi();
       if (data && Array.isArray(data)) {
-        setPaymentMethods(data);
-        if (data.length > 0) {
-          const defaultMethod = data.find((m) => m.name.toLowerCase().includes("cash")) || data[0];
-          setPaymentMethod(defaultMethod.name.toLowerCase().includes("cash") ? "cod" : "upi");
-        }
+        // Filter out COD methods
+        const onlineMethods = data.filter(m => !m.name.toLowerCase().includes("cash") && !m.name.toLowerCase().includes("cod"));
+        setPaymentMethods(onlineMethods);
+        setPaymentMethod("upi");
       } else if (data && data.methods && Array.isArray(data.methods)) {
-         setPaymentMethods(data.methods);
-         if (data.methods.length > 0) {
-           const defaultMethod = data.methods.find((m) => m.name.toLowerCase().includes("cash")) || data.methods[0];
-           setPaymentMethod(defaultMethod.name.toLowerCase().includes("cash") ? "cod" : "upi");
-         }
+         // Filter out COD methods
+         const onlineMethods = data.methods.filter(m => !m.name.toLowerCase().includes("cash") && !m.name.toLowerCase().includes("cod"));
+         setPaymentMethods(onlineMethods);
+         setPaymentMethod("upi");
       }
     } catch (error) {
       console.error("Failed to fetch payment methods:", error);
@@ -890,7 +888,7 @@ const Shop = () => {
               )}
 
               {/* Payment Methods */}
-              {false && (
+              {true && (
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
                 <h2 className="font-bold text-gray-800 flex items-center gap-2 mb-5"><CreditCard size={18} className="text-yellow-500" /> Payment Method</h2>
                 {loadingMethods ? (
